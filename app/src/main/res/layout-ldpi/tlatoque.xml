@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/layout_options"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<!--Bar-->
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:background="@color/TitleBar"
+    android:orientation="horizontal"
+    android:baselineAligned="false">
+
+    <FrameLayout
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_weight="0"
+        android:layout_marginLeft="40dp">
+
+        <LinearLayout
+            android:id="@+id/loading_profile"
+            android:background="#00FFFFFF"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center_horizontal">
+
+            <ProgressBar
+                style="@android:style/Widget.Holo.ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:indeterminate="true" />
+        </LinearLayout>
+
+        <com.loopj.android.image.SmartImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/profile_pic" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/title_right"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="-15dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        android:weightSum="1.0"
+        android:baselineAligned="false">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".80">
+
+            <TextView
+                android:id="@+id/picture_caption"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="90dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/caption_dialog_box"
+                android:text="@string/picture_caption"
+                android:textColor="@color/Black"
+                android:textSize="25sp"
+                android:maxLines="5"
+                android:ellipsize="end" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight=".20">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/main_weather"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="@color/Black"
+                    android:shadowDx="-1"
+                    android:shadowDy="-1"
+                    android:shadowRadius="1"
+                    android:textSize="40sp"
+                    android:textColor="@color/White" />
+
+                <com.loopj.android.image.SmartImageView
+                    android:id="@+id/weather_condition"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="Weather condition" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+</RelativeLayout>

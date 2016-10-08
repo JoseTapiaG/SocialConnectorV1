@@ -1,0 +1,61 @@
+<resources>
+
+    <!-- Logs -->
+    <string name="last_sent_use_log">last_sent_use_log</string>
+    <string name="last_sent_services_log">last_sent_services_log</string>
+    <string name="logs_email">sochoa@dcc.uchile.cl</string>
+
+    <!-- Services Logs -->
+    <string name="skype_begin_call">skype_begin_call</string>
+    <string name="new_photo_begin_see">new_photo_begin_see</string>
+    <string name="album_photo_begin_see">album_photo_begin_see</string>
+    
+    <!-- Instagram -->
+    <string name="instagram_id">29df6514e6154e618bab7e2c7bb4b35f</string>
+    <string name="instagram_redirect_uri">socialconnector://oauth/callback/instagram/</string>
+    <string name="instagram_scheme">socialconnector</string>
+    <string name="instagram_user_id">instagram_id</string>
+    <string name="instagram_token">instagram_token</string>
+    <string name="instagram_username">instagram_username</string>
+    <string name="instagram_last_seen_photo">instagram_last_seen_photo</string>
+
+    <!-- Contact Lists -->
+    <string name="top_message_call">Indica a quién deseas llamar</string>
+    <string name="top_message_send_message">Indica a quién deseas enviar un mensaje</string>
+    <string name="top_message_album">¿De quién quieres ver fotos?</string>
+    <string name="contact_list_left_arrow_text">Ver anteriores</string>
+    <string name="contact_list_right_arrow_text">Ver siguientes</string>
+
+    <!-- Top bar texts -->
+    <string name="topbar_call_text">Llamar\n</string>
+    <string name="topbar_send_message_text">Enviar Mensaje\n</string>
+    <string name="topbar_new_messages_text">Mensajes Recibidos\n</string>
+    <string name="topbar_new_photos_text">Fotos Nuevas\n</string>
+    <string name="topbar_album_text">Álbum Familiar\n</string>
+
+    <!-- Main Activity -->
+    <string name="app_name">Social Connector</string>
+    <string name="title_activity_main">Social Connector</string>
+
+    <!-- Descriptions -->
+    <string name="profile_picture_description">Foto de Perfil</string>
+    <string name="phone_description">Puedes llamar a un pariente tuyo</string>
+
+    <!-- Send Message -->
+    <string name="send_message_subject">[Social Connector] Nuevo mensaje</string>
+    <string name="send_message_content">Hola. Has recibido un nuevo mensaje personal:</string>
+    <string name="send_message_sent">Mensaje enviado</string>
+
+    <!-- New Messages -->
+    <string name="new_messages_left_arrow">Ver más nuevo</string>
+    <string name="new_messages_right_arrow">Ver más antiguo</string>
+    <string name="new_messages_last_seen_message">new_messages_last_seen_message</string>
+
+    <!-- Tlatoque App -->
+    <string name="dialog_message">Message</string>
+    <string name="profile_pic">Profile pic</string>
+    <string name="picture_caption"> </string>
+
+    <string name="url_base">http://socialconnector.dcc.uchile.cl/</string>
+
+</resources>

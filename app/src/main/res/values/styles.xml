@@ -1,0 +1,46 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="AppTheme" parent="android:Theme.Light" />
+    
+    <style name="WhiteBigText" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">40sp</item>
+    </style>
+    
+    <style name="WhiteMediumText" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">40dip</item>
+    </style>
+    <style name="RedDialogTheme" parent="@android:style/Theme.Dialog">
+       <item name="android:tint">@color/alert_tint</item>
+    </style>
+  
+    <style name="RedAlertDialogTheme" parent="RedDialogTheme">
+       <item name="android:windowBackground">@color/black</item>
+    </style>
+
+    <style name="GenericProgressBackground" parent="android:Theme">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">#DD111111</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="GenericProgressIndicator" parent="@android:style/Widget.ProgressBar.Large">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:indeterminate">true</item>
+    </style>
+
+    <style name="CommentsProgressBackground" parent="android:Theme">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">#00FFFFFF</item>
+        <!--<item name="android:layout_centerInParent">true</item>-->
+    </style>
+
+    <style name="CommentsProgressIndicator" parent="@android:style/Widget.ProgressBar.Large.Inverse">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:indeterminate">true</item>
+    </style>
+</resources>
