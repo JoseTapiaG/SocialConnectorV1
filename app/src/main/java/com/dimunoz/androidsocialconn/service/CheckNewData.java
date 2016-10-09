@@ -3,7 +3,11 @@ package com.dimunoz.androidsocialconn.service;
 import android.util.Log;
 
 import com.dimunoz.androidsocialconn.asynctasks.GetEmailsFromGmail;
+import com.dimunoz.androidsocialconn.database.PhotoEntity;
 import com.dimunoz.androidsocialconn.main.MainActivity;
+import com.dimunoz.androidsocialconn.utils.Utils;
+
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,7 +32,8 @@ public class CheckNewData {
             @Override
             public void run() {
                 Log.d(TAG, "run");
-                // TODO: 26-09-2016 Recuperar fotos automaticamente
+                MainActivity.newPhotosList = (ArrayList<PhotoEntity>) MainActivity.photoService.getNewPhotos();
+                Utils.changeBadgeNewPhotosText(activity);
                 if (!MainActivity.checkingNewEmails)
                     new GetEmailsFromGmail(activity).execute();
             }

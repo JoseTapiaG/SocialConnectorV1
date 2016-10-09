@@ -249,7 +249,6 @@ public class GetEmailsFromGmail extends AsyncTask<Void, Void, Void> {
                             Log.d(TAG, localFileName);
                             if (!localFile.exists())
                                 activity.photoService.savePhoto(pm, part, localFileName);
-                                //part.saveFile(localFile);
                             if (Utils.isImage(localFile)) {
                                 pm.setHasAttachedImage(true);
                                 pm.setImageFile(localFile);

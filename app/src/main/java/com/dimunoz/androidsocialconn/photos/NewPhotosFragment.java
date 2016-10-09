@@ -42,7 +42,9 @@ public class NewPhotosFragment extends BaseDisplayPhotoFragment {
         Log.d(TAG, "onCreate");
         settings = PreferenceManager
                 .getDefaultSharedPreferences(getActivity().getApplicationContext());
-        this.currentPhoto = MainActivity.newPhotosList.get(0);
+        MainActivity.newPhotosList = (ArrayList<PhotoEntity>) MainActivity.photoService.getNewPhotos();
+        if(!MainActivity.newPhotosList.isEmpty())
+            this.currentPhoto = MainActivity.newPhotosList.get(0);
         setHasOptionsMenu(true);
     }
 
@@ -91,21 +93,15 @@ public class NewPhotosFragment extends BaseDisplayPhotoFragment {
         editor.apply();
 
         // change photo
-        //this.photo.setImageUrl(currentPhoto.getLowResUrl());
-        // TODO: 26-09-2016 Recuperar usuario
-        this.photoAuthor.setText("Test");
+        this.photo.setImageBitmap(MainActivity.photoService.getPhoto(currentPhoto.getPath()));
+        this.photoAuthor.setText(currentPhoto.getContactName());
         this.photoCaption.setText(currentPhoto.getCaption());
     }
 
     private void markCurrentPhotoAsSeen() {
         if (!currentPhoto.isSeen()) {
             currentPhoto.setSeen(true);
-            SharedPreferences.Editor editor;
-            editor = settings.edit();
-            editor.putString(getActivity().getApplicationContext()
-                            .getString(R.string.instagram_last_seen_photo),
-                    currentPhoto.getId() + "");
-            editor.apply();
+            MainActivity.photoService.updatePhoto(currentPhoto);
             Utils.changeBadgeNewPhotosText(getActivity());
         }
     }

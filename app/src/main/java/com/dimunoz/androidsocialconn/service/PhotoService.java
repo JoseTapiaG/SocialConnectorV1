@@ -1,6 +1,8 @@
 package com.dimunoz.androidsocialconn.service;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.dimunoz.androidsocialconn.database.PhotoDB;
 import com.dimunoz.androidsocialconn.database.PhotoEntity;
@@ -26,23 +28,32 @@ public class PhotoService {
         return photoDB.getPhotosByEmail(email);
     }
 
+    public List<PhotoEntity> getNewPhotos(){
+        return photoDB.getNewPhotos();
+    }
+
     public long savePhoto(PersonalMessage pm, MimeBodyPart part, String localFileName){
         try {
             File localFile = new File(localFileName);
             part.saveFile(localFile);
 
-            PhotoEntity photoEntity = new PhotoEntity(pm.getContent(), pm.getAuthor().getEmail(), localFileName, 0, new Date().toString());
+            PhotoEntity photoEntity = new PhotoEntity(pm.getAuthor().getNickname(), pm.getContent(), pm.getAuthor().getEmail(), localFileName, 0, new Date().toString());
             return photoDB.insertPhoto(photoEntity);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (MessagingException e) {
+        } catch (Exception e){
             e.printStackTrace();
         }
         return 0;
     }
 
-    public void getPhoto(String path){
+    public Bitmap getPhoto(String path){
+        File imgFile = new  File(path);
+        if(imgFile.exists())
+            return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+        return null;
+    }
 
+    public void updatePhoto(PhotoEntity photo) {
+        photoDB.updatePhoto(photo);
     }
 }

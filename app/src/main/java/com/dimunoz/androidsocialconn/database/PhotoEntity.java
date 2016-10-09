@@ -9,18 +9,24 @@ import java.util.Date;
 public class PhotoEntity {
 
     private long id;
+    private String contactName;
     private String caption;
     private String email;
     private String path;
     private boolean seen;
     private String date;
 
-    public PhotoEntity(String caption, String email, String path, int seen, String date) {
+    public PhotoEntity(String contactName, String caption, String email, String path, int seen, String date) {
+        this.contactName = contactName;
         this.caption = caption;
         this.email = email;
         this.path = path;
         this.seen = seen != 0;
         this.date = date;
+    }
+
+    public String getContactName() {
+        return contactName;
     }
 
     public String getCaption() {

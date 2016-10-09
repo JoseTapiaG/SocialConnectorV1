@@ -26,8 +26,6 @@ import com.dimunoz.androidsocialconn.database.PhotoEntity;
 import com.dimunoz.androidsocialconn.photos.AlbumContactsFragment;
 import com.dimunoz.androidsocialconn.photos.AlbumPhotoFragment;
 import com.dimunoz.androidsocialconn.photos.NewPhotosFragment;
-import com.dimunoz.androidsocialconn.photos.NewPhotosTransitionFragment;
-import com.dimunoz.androidsocialconn.photos.Photo;
 import com.dimunoz.androidsocialconn.receivemessages.NewMessagesFragment;
 import com.dimunoz.androidsocialconn.receivemessages.NewMessagesTransitionFragment;
 import com.dimunoz.androidsocialconn.receivemessages.PersonalMessage;
@@ -48,7 +46,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -341,7 +338,7 @@ public class MainActivity extends Activity {
         Fragment currentFragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG);
         if (!(currentFragment instanceof NewPhotosFragment)) {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            NewPhotosTransitionFragment newPhotosFragment = new NewPhotosTransitionFragment();
+            NewPhotosFragment newPhotosFragment = new NewPhotosFragment();
             transaction.replace(R.id.fragment_container, newPhotosFragment, FRAGMENT_TAG);
             transaction.commit();
             if (currentFragment instanceof AlbumPhotoFragment) {
@@ -368,12 +365,7 @@ public class MainActivity extends Activity {
     }
 
     private void checkSeenNewPhotos() {
-        Iterator<PhotoEntity> iterator = newPhotosList.iterator();
-        while (iterator.hasNext()) {
-            if (iterator.next().isSeen()) {
-                iterator.remove();
-            }
-        }
+        MainActivity.newPhotosList = (ArrayList<PhotoEntity>) photoService.getNewPhotos();
         Utils.changeBadgeNewPhotosText(this);
     }
 

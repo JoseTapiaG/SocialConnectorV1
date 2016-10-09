@@ -80,25 +80,8 @@ public class AlbumPhotoFragment extends BaseDisplayPhotoFragment {
         editor.apply();
 
         // change photo
-        System.out.println(currentPhoto.getPath());
-
-        File imgFile = new  File(currentPhoto.getPath());
-
-        if(imgFile.exists()){
-
-            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-
-            this.photo.setImageBitmap(bitmap);
-
-        }
-
-
-
-
-
-
-        // TODO: 26-09-2016 Recuperar usuario
-        this.photoAuthor.setText("Usuario test");
+        this.photo.setImageBitmap(MainActivity.photoService.getPhoto(currentPhoto.getPath()));
+        this.photoAuthor.setText(currentPhoto.getContactName());
         this.photoCaption.setText(currentPhoto.getCaption());
     }
 

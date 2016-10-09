@@ -15,11 +15,12 @@ public class SocialConnectorDBHelper extends SQLiteOpenHelper {
     private static final String DATE_TYPE = " DATE";
     private static final String BOOLEAN_TYPE = " BOOLEAN";
     private static final String DATABASE_NAME = " SocialConnector.db";
-    private static final int DATABASE_VERSION = 1;
-    private static final String COMMA_SEP = ",";
+    private static final int DATABASE_VERSION = 10;
+    private static final String COMMA_SEP = ", ";
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + Photo.TABLE_NAME + " (" +
-                    Photo._ID + " INTEGER PRIMARY KEY," +
+                    Photo._ID + " INTEGER PRIMARY KEY, " +
+                    Photo.CONTACT_NAME + TEXT_TYPE + COMMA_SEP +
                     Photo.CAPTION + TEXT_TYPE + COMMA_SEP +
                     Photo.EMAIL + TEXT_TYPE + COMMA_SEP +
                     Photo.PATH + TEXT_TYPE + COMMA_SEP +

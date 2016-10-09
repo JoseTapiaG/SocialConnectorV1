@@ -1,13 +1,16 @@
 package com.dimunoz.androidsocialconn.photos;
 
+import android.annotation.TargetApi;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dimunoz.androidsocialconn.R;
 import com.dimunoz.androidsocialconn.basefragments.BaseContactListFragment;
@@ -69,6 +72,7 @@ public class AlbumContactsFragment extends BaseContactListFragment {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     public void handleContactTapEvent(View view) {
         long userId = (long) view.getTag();
         MainActivity.progressDialog.setMessage("Cargando fotos...");
@@ -78,12 +82,17 @@ public class AlbumContactsFragment extends BaseContactListFragment {
                 // TODO: 26-09-2016 Recuperar fotos con fotos service
                 MainActivity.currentAlbumUser = contact;
                 MainActivity.albumPhotosList = (ArrayList<PhotoEntity>) MainActivity.photoService.getPhotos(contact.getEmail());
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                AlbumPhotoFragment albumPhotoFragment = new AlbumPhotoFragment();
-                transaction.replace(R.id.fragment_container, albumPhotoFragment, MainActivity.FRAGMENT_TAG);
-                transaction.commit();
                 MainActivity.progressDialog.dismiss();
+                if(!MainActivity.albumPhotosList.isEmpty()) {
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    AlbumPhotoFragment albumPhotoFragment = new AlbumPhotoFragment();
+                    transaction.replace(R.id.fragment_container, albumPhotoFragment, MainActivity.FRAGMENT_TAG);
+                    transaction.commit();
+
+                } else {
+                    Toast.makeText(getActivity(), "No hay fotografías para mostrar", Toast.LENGTH_SHORT).show();
+                }
                 break;
             }
         }
