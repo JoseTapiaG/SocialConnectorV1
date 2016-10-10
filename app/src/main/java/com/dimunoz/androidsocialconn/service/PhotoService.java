@@ -32,6 +32,10 @@ public class PhotoService {
         return photoDB.getNewPhotos();
     }
 
+    public List<PhotoEntity> getLastTenPhotos(){
+        return photoDB.getLastTenPhotos();
+    }
+
     public long savePhoto(PersonalMessage pm, MimeBodyPart part, String localFileName){
         try {
             File localFile = new File(localFileName);

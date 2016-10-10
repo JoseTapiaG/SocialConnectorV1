@@ -1,6 +1,7 @@
 package com.dimunoz.androidsocialconn.tlatoque;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.dimunoz.androidsocialconn.R;
+import com.loopj.android.image.BitmapImage;
 
 /**
  * Created by: Eduardo Quintana Contreras
@@ -18,20 +20,15 @@ import com.dimunoz.androidsocialconn.R;
 public class PictureView extends FrameLayout {
 
     private SmartTouchImageView image;
-    private View viewLoading;
 
     public PictureView(Context context) {
         super(context);
-
-        LayoutInflater li = LayoutInflater.from(context);
-        viewLoading = li.inflate(R.layout.loading, this, false);
-        addView(viewLoading);
 
         image = new SmartTouchImageView(context);
         image.setDrawingCacheEnabled(false);
         LayoutParams imageLayout = new LayoutParams(
                 LayoutParams.MATCH_PARENT,
-                LayoutParams.MATCH_PARENT);
+                LayoutParams.MATCH_PARENT, 8);
         image.setLayoutParams(imageLayout);
         image.setMaxZoom(10f);
         addView(image);
@@ -40,21 +37,12 @@ public class PictureView extends FrameLayout {
     public void setDetector(final GestureDetector gestureDetector) {
 	    //TODO set detector on creation?
         image.setGestureDetector(gestureDetector);
-	    viewLoading.setOnTouchListener(new OnTouchListener() {
-		    @Override
-		    public boolean onTouch(View v, MotionEvent event) {
-			    if (gestureDetector.onTouchEvent(event)) {
-				    return true;
-			    }
-			    return true;
-		    }
-	    });
     }
 
-	public void loadPicture(String url) {
+	public void loadPicture(Bitmap bitmap) {
         image.setVisibility(View.GONE);
-        image.setImageUrl(url);
-        viewLoading.setVisibility(View.VISIBLE);
+        image.setImageBitmap(bitmap);
+        image.setVisibility(View.VISIBLE);
     }
 
     public boolean isZoomed() {

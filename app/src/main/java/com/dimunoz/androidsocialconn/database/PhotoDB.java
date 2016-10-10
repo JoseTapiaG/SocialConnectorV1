@@ -69,7 +69,7 @@ public class PhotoDB {
 
         c.moveToFirst();
         ArrayList<PhotoEntity> photos = new ArrayList<>();
-        while (c.isAfterLast()){
+        while (!c.isAfterLast()){
             PhotoEntity photoEntity = new PhotoEntity(
                     c.getString(c.getColumnIndexOrThrow(Photo.CONTACT_NAME)),
                     c.getString(c.getColumnIndexOrThrow(Photo.CAPTION)),
@@ -88,17 +88,6 @@ public class PhotoDB {
     public List<PhotoEntity> getNewPhotos() {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        String[] projection = {
-                Photo._ID,
-                Photo.CONTACT_NAME,
-                Photo.CAPTION,
-                Photo.EMAIL,
-                Photo.PATH,
-                Photo.SEEN,
-                Photo.DATE
-        };
-
-// Filter results WHERE "title" = 'My Title'
         String selection = Photo.SEEN + " = ?";
         String[] selectionArgs = {"0"};
 
@@ -149,5 +138,28 @@ public class PhotoDB {
 
         db.update(Photo.TABLE_NAME, values, where, whereArgs);
         db.close();
+    }
+
+    public List<PhotoEntity> getLastTenPhotos() {
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        Cursor c = db.rawQuery("Select * from " + Photo.TABLE_NAME + " DESC limit 10", null);
+
+        c.moveToFirst();
+        ArrayList<PhotoEntity> photos = new ArrayList<>();
+        while (!c.isAfterLast()){
+            PhotoEntity photoEntity = new PhotoEntity(
+                    c.getString(c.getColumnIndexOrThrow(Photo.CONTACT_NAME)),
+                    c.getString(c.getColumnIndexOrThrow(Photo.CAPTION)),
+                    c.getString(c.getColumnIndexOrThrow(Photo.EMAIL)),
+                    c.getString(c.getColumnIndexOrThrow(Photo.PATH)),
+                    c.getInt(c.getColumnIndexOrThrow(Photo.SEEN)),
+                    c.getString(c.getColumnIndexOrThrow(Photo.CAPTION)));
+            photoEntity.setId(c.getInt(c.getColumnIndexOrThrow(Photo._ID)));
+            photos.add(photoEntity);
+            c.moveToNext();
+        }
+        db.close();
+        return photos;
     }
 }

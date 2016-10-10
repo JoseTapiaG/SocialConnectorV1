@@ -168,7 +168,7 @@ public class MainActivity extends Activity {
         // AudioManager by Victor
         // edited by Diego Munoz to log Skype Calls
         AudioManager myAudioManager;
-        myAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        myAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         myAudioManager.requestAudioFocus(new AudioManager.OnAudioFocusChangeListener() {
             public void onAudioFocusChange(int focusChange) {
                 if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
@@ -336,6 +336,7 @@ public class MainActivity extends Activity {
     public void displayNewPhotosFragment() {
         FragmentManager fragmentManager = getFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG);
+
         if (!(currentFragment instanceof NewPhotosFragment)) {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             NewPhotosFragment newPhotosFragment = new NewPhotosFragment();
@@ -345,6 +346,7 @@ public class MainActivity extends Activity {
                 logAlbumPhoto(currentFragment);
             }
         }
+
     }
 
     public void displayAlbumFragment() {
@@ -390,13 +392,13 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        public void run(AccountManagerFuture<Bundle> result){
-            try{
+        public void run(AccountManagerFuture<Bundle> result) {
+            try {
                 Bundle bundle = result.getResult();
                 oauthToken = bundle.getString(AccountManager.KEY_AUTHTOKEN);
                 emailAccount = account.name;
                 new CreateImapStore(MainActivity.this, emailAccount, oauthToken).execute();
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -484,8 +486,8 @@ public class MainActivity extends Activity {
 
         for (ActivityManager.RunningTaskInfo recentTask : recentTasks) {
             Log.d("Executed app", "Application executed : "
-                    +recentTask.baseActivity.toShortString()
-                    + "\t\t ID: "+recentTask.id+"");
+                    + recentTask.baseActivity.toShortString()
+                    + "\t\t ID: " + recentTask.id + "");
             // bring to front
             if (recentTask.baseActivity.toShortString().contains("com.dimunoz.androidsocialconn.main.MainActivity")) {
                 activityManager.moveTaskToFront(recentTask.id, ActivityManager.MOVE_TASK_WITH_HOME);

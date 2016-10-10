@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dimunoz.androidsocialconn.R;
+import com.dimunoz.androidsocialconn.database.PhotoEntity;
 import com.dimunoz.androidsocialconn.main.MainActivity;
 import com.dimunoz.androidsocialconn.photos.Photo;
 import com.dimunoz.androidsocialconn.xml.XmlContact;
@@ -77,14 +78,12 @@ public class TlatoqueFragment extends Fragment {
     private View dialogLoading;
     private TextView dialogMessage;
 
-    private ArrayList<GetAllPicturesTask> tasks;
-
     // Carousel
     private TlatoqueViewFlipper flipper;
     private Animation inFromRightAnimation, outToLeftAnimation, inFromLeftAnimation, outToRightAnimation;
     public GestureDetector gestureDetector;
 
-    private ArrayList<Photo> pictures = new ArrayList<>();
+    private ArrayList<PhotoEntity> pictures = new ArrayList<>();
     private int currentIndex = 0;
 
     // Bar
@@ -98,7 +97,6 @@ public class TlatoqueFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tasks = new ArrayList<>();
     }
 
     @Override
@@ -169,8 +167,6 @@ public class TlatoqueFragment extends Fragment {
     }
 
     public boolean onBackPressed() {
-        // stop fetching friends and pictures
-        cancelPicturesTask();
         return false;
     }
 
@@ -395,13 +391,13 @@ public class TlatoqueFragment extends Fragment {
                     i = getPictureIndex(currentIndex - HALF_CACHE);
                 }
 
-                Photo picture = getPicture(i);
+                PhotoEntity picture = getPicture(i);
                 addPictureView(picture);
             }
         }
         // load all pictures
         else {
-            for (Photo picture : pictures) {
+            for (PhotoEntity picture : pictures) {
                 addPictureView(picture);
             }
         }
@@ -410,16 +406,16 @@ public class TlatoqueFragment extends Fragment {
     /**
      * Adds a <code>PictureView</code> to the carousel.
      */
-    private void addPictureView(Photo picture) {
+    private void addPictureView(PhotoEntity picture) {
         PictureView pictureView = new PictureView(getActivity());
         pictureView.setDetector(gestureDetector);
-        pictureView.loadPicture(picture.getHighResUrl());
+        pictureView.loadPicture(MainActivity.photoService.getPhoto(picture.getPath()));
         pictureView.setHandler(handlerFlipper);
         flipper.addView(pictureView);
 
         // cache user's profile picture
-        // TODO: 26-09-2016 Ver que hace esto
-        //new SmartImageView(getActivity()).setImageUrl(picture.getInstagramUser().getProfilePictureUrl());
+        // TODO: 26-09-2016 Cargar profile picture
+        new SmartImageView(getActivity()).setImageUrl("http://static.batanga.com/sites/default/files/styles/large/public/curiosidades.batanga.com/files/Por-qu%C3%A9-los-perros-mueven-la-cola.jpg?itok=I1MKTTQi");
     }
 
     /**
@@ -455,7 +451,7 @@ public class TlatoqueFragment extends Fragment {
 
         PictureView pictureView = ((PictureView) flipper.getChildAt(getFlipperIndex(flipper.getDisplayedChild() + 1)));
         pictureView.resetZoom();
-        pictureView.loadPicture(pictures.get(getPictureIndex(currentIndex)).getHighResUrl());
+        pictureView.loadPicture(MainActivity.photoService.getPhoto(pictures.get(getPictureIndex(currentIndex)).getPath()));
         flipper.showNext();
         updateCache(1);
     }
@@ -474,7 +470,7 @@ public class TlatoqueFragment extends Fragment {
 
         PictureView pictureView = ((PictureView) flipper.getChildAt(getFlipperIndex(flipper.getDisplayedChild() - 1)));
         pictureView.resetZoom();
-        pictureView.loadPicture(pictures.get(getPictureIndex(currentIndex)).getHighResUrl());
+        pictureView.loadPicture(MainActivity.photoService.getPhoto(pictures.get(getPictureIndex(currentIndex)).getPath()));
         flipper.showPrevious();
         updateCache(-1);
     }
@@ -488,15 +484,13 @@ public class TlatoqueFragment extends Fragment {
      */
     private void updateCache(int direction) {
         if (pictures.size() > PICTURES_CACHE) {
-            WebImage.removeFromMemoryCache(getPicture(currentIndex - (direction * PICTURES_CACHE)).getHighResUrl());
-
-            Photo picture = getPicture(currentIndex + (direction * HALF_CACHE));
+            PhotoEntity picture = getPicture(currentIndex + (direction * HALF_CACHE));
             ((PictureView) flipper.getChildAt(getFlipperIndex(flipper.getDisplayedChild() + (direction * HALF_CACHE))))
-                    .loadPicture(picture.getHighResUrl());
+                    .loadPicture(MainActivity.photoService.getPhoto(picture.getPath()));
 
             // cache user's profile picture
             // TODO: 26-09-2016 Ver que es esto
-            //new SmartImageView(getActivity()).setImageUrl(picture.getInstagramUser().getProfilePictureUrl());
+            new SmartImageView(getActivity()).setImageUrl("http://static.batanga.com/sites/default/files/styles/large/public/curiosidades.batanga.com/files/Por-qu%C3%A9-los-perros-mueven-la-cola.jpg?itok=I1MKTTQi");
         }
     }
 
@@ -536,7 +530,7 @@ public class TlatoqueFragment extends Fragment {
         }
     }
 
-    private Photo getPicture(int index) {
+    private PhotoEntity getPicture(int index) {
         return pictures.get(getPictureIndex(index));
     }
 
@@ -578,10 +572,10 @@ public class TlatoqueFragment extends Fragment {
      * Updates the GUI:
      */
     public void updateFrame() {
-        Photo picture = pictures.get(currentIndex);
+        PhotoEntity picture = pictures.get(currentIndex);
 
         // set caption
-        String creationDate = picture.getCreationDateParsed();
+        String creationDate = picture.getDate();
 
         String pictureCaption = picture.getCaption();
         pictureCaption = !pictureCaption.equals("") ? "<br>" + pictureCaption : "";
@@ -601,29 +595,45 @@ public class TlatoqueFragment extends Fragment {
 
     // Pictures
     public void getPictures() {
-        cancelPicturesTask();
-        // TODO: 26-09-2016 cambiar forma de cargar fotos
-        /*for (XmlContact contact : MainActivity.xmlContacts) {
-            if (contact.getInstagram().compareTo("") != 0) {
-                Log.d(TAG, contact.getInstagram());
-                GetAllPicturesTask getAllPicturesTask;
-                String url = "https://api.instagram.com/v1/users/"
-                        + contact.getInstagramUser().getId() +
-                        "/media/recent/?access_token=" +
-                        MainActivity.instagramToken + "&count=10";
-                getAllPicturesTask = new GetAllPicturesTask(url);
-                tasks.add(getAllPicturesTask);
-                getAllPicturesTask.execute();
-            }
-        }*/
-    }
+        resetFlipper();
+        pictures.clear();
+        currentIndex = 0;
+        showLoadingPicturesDialog();
 
-    public void cancelPicturesTask() {
-        for (GetAllPicturesTask getAllPicturesTask : tasks) {
-            if (getAllPicturesTask != null && getAllPicturesTask.getStatus() != AsyncTask.Status.FINISHED) {
-                getAllPicturesTask.cancel(true);
+        Util.setPaused(Util.PAUSED_LOADING, true);
+        stopFlipping();
+        elapsed = 0;
+
+        resetRefresh();
+        pictures = (ArrayList<PhotoEntity>) MainActivity.photoService.getLastTenPhotos();
+
+
+        if (!pictures.isEmpty()) {
+            Collections.shuffle(pictures);
+            int maxPictures = pictures.size() > TlatoqueFragment.this.maxPictures ?
+                    TlatoqueFragment.this.maxPictures : pictures.size();
+            pictures = new ArrayList<>(pictures.subList(0, maxPictures));
+            Log.d(TAG, "PICTURES " + pictures.size());
+
+            initFlipper();
+            flipper.setDisplayedChild(0);
+            updateFrame();
+
+            Util.setPaused(Util.PAUSED_LOADING, false);
+
+            if (autoStart) {
+                startFlipping();
+                autoStart = false;
+            } else if (!Util.isPaused()) {
+                startFlipping();
             }
         }
+
+        hideView(dialogLoading);
+
+        // set next refresh
+        scheduleRefresh();
+
     }
 
     private void showLoadingPicturesDialog() {
@@ -712,110 +722,5 @@ public class TlatoqueFragment extends Fragment {
 
     private void setViewVisibility(View view, int visibility) {
         view.setVisibility(visibility);
-    }
-
-    private class GetAllPicturesTask extends AsyncTask<Void, Void, String> {
-
-        private String url;
-
-        public GetAllPicturesTask(String url) {
-            this.url = url;
-        }
-
-        // source from http://hmkcode.com/android-parsing-json-data/
-        private String makeGetApiRequest(String url) {
-            InputStream inputStream;
-            String result = "";
-            try {
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
-                inputStream = httpResponse.getEntity().getContent();
-                if (inputStream != null)
-                    result = convertInputStreamToString(inputStream);
-                else
-                    result = "Did not work!";
-            } catch (Exception e) {
-                Log.d("InputStream", e.getLocalizedMessage());
-            }
-
-            return result;
-        }
-
-        private String convertInputStreamToString(InputStream inputStream) throws IOException {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-            String result = "";
-            while ((line = bufferedReader.readLine()) != null)
-                result += line;
-            inputStream.close();
-            return result;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            resetFlipper();
-            pictures.clear();
-            currentIndex = 0;
-            showLoadingPicturesDialog();
-
-            Util.setPaused(Util.PAUSED_LOADING, true);
-            stopFlipping();
-            elapsed = 0;
-
-            resetRefresh();
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            try {
-                JSONObject json = new JSONObject(result);
-                JSONArray data = json.getJSONArray("data");
-                for (int i = 0; i < data.length(); i++) {
-                    JSONObject element = data.getJSONObject(i);
-                    if (element.getString("type").compareTo("image") == 0) {
-                        Photo p = new Photo(element);
-                        if (!Photo.isInList(p, pictures))
-                            pictures.add(p);
-                    }
-                }
-                tasks.remove(this);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            if (isCancelled()) {
-                Log.d(TAG, "CANCELLED");
-            }
-            if (!pictures.isEmpty() && tasks.size() == 0) {
-                Collections.shuffle(pictures);
-                int maxPictures = pictures.size() > TlatoqueFragment.this.maxPictures ?
-                        TlatoqueFragment.this.maxPictures : pictures.size();
-                pictures = new ArrayList<>(pictures.subList(0, maxPictures));
-                Log.d(TAG, "PICTURES " + pictures.size());
-
-                initFlipper();
-                flipper.setDisplayedChild(0);
-                updateFrame();
-
-                Util.setPaused(Util.PAUSED_LOADING, false);
-
-                if (autoStart) {
-                    startFlipping();
-                    autoStart = false;
-                } else if (!Util.isPaused()) {
-                    startFlipping();
-                }
-            }
-
-            hideView(dialogLoading);
-
-            // set next refresh
-            scheduleRefresh();
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            return makeGetApiRequest(url);
-        }
     }
 }
