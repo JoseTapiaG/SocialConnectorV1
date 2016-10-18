@@ -15,7 +15,7 @@ public class SocialConnectorDBHelper extends SQLiteOpenHelper {
     private static final String DATE_TYPE = " DATE";
     private static final String BOOLEAN_TYPE = " BOOLEAN";
     private static final String DATABASE_NAME = " SocialConnector.db";
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
     private static final String COMMA_SEP = ", ";
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + Photo.TABLE_NAME + " (" +

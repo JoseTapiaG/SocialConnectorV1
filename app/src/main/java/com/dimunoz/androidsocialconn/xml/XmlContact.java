@@ -18,6 +18,18 @@ public class XmlContact {
     private String photo;
     private String skype;
 
+    public XmlContact() {
+    }
+
+    public XmlContact(long id, String email, String instagram, String nickname, String photo, String skype) {
+        this.id = id;
+        this.email = email;
+        this.instagram = instagram;
+        this.nickname = nickname;
+        this.photo = photo;
+        this.skype = skype;
+    }
+
     public long getId() {
         return id;
     }

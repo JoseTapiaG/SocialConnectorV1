@@ -46,6 +46,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -149,13 +150,28 @@ public class MainActivity extends Activity {
         userContact = XmlParser.parseOwnerXml();
         calledContact = userContact;
 
+
+        photoService = new PhotoService(this);
+
         // initial variable of private messages
         newMessagesList = new ArrayList<>();
 
         settings = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext());
 
-        photoService = new PhotoService(this);
+        boolean loadBD = settings.getBoolean(
+                "init_demo",
+                true);
+
+        if(loadBD){
+            loadBD();
+            editor = settings.edit();
+            editor.putBoolean("init_demo",
+                    false);
+            editor.apply();
+        }
+
+
 
         // connect to email
         accountManager = AccountManager.get(this);
@@ -417,7 +433,7 @@ public class MainActivity extends Activity {
         scheduleCheckMessagesTaskExecutor = Executors.newScheduledThreadPool(5);
         CheckNewData myTask = new CheckNewData(this);
         scheduledFuture = scheduleCheckMessagesTaskExecutor.scheduleAtFixedRate(
-                myTask.getRunnable(), 0, 5, TimeUnit.MINUTES);
+                myTask.getRunnable(), 0, 3, TimeUnit.MINUTES);
     }
 
     public void writeTempFile() {
@@ -493,5 +509,38 @@ public class MainActivity extends Activity {
                 activityManager.moveTaskToFront(recentTask.id, ActivityManager.MOVE_TASK_WITH_HOME);
             }
         }
+    }
+
+    private void loadBD() {
+        String filepath = Environment.getExternalStorageDirectory().getPath()
+                + "/EmailImages";
+        File folder = new File(filepath);
+
+        // create folder if does not exist
+        if (!folder.exists()){
+            Boolean b = folder.mkdirs();
+            Log.d(TAG, "email images folder created " + b);
+        }
+
+        PhotoEntity photoEntity = new PhotoEntity("Contacto 1", "Mensaje 1", "test1@demo.com",  folder.getAbsolutePath() + "/foto1", 0, new Date().toString());
+        photoService.savePhoto(photoEntity);
+
+        photoEntity = new PhotoEntity("Contacto 1", "Mensaje 2", "test1@demo.com",  folder.getAbsolutePath() + "/foto2", 0, new Date().toString());
+        photoService.savePhoto(photoEntity);
+
+        photoEntity = new PhotoEntity("Contacto 1", "Mensaje 3", "test1@demo.com",  folder.getAbsolutePath() + "/foto3", 0, new Date().toString());
+        photoService.savePhoto(photoEntity);
+
+        photoEntity = new PhotoEntity("Contacto 1", "Mensaje 4", "test1@demo.com",  folder.getAbsolutePath() + "/foto4", 0, new Date().toString());
+        photoService.savePhoto(photoEntity);
+
+        photoEntity = new PhotoEntity("Contacto 2", "Mensaje 5", "test2@demo.com",  folder.getAbsolutePath() + "/foto5", 0, new Date().toString());
+        photoService.savePhoto(photoEntity);
+
+        photoEntity = new PhotoEntity("Contacto 2", "Mensaje 6", "test2@demo.com",  folder.getAbsolutePath() + "/foto6", 0, new Date().toString());
+        photoService.savePhoto(photoEntity);
+
+        photoEntity = new PhotoEntity("Contacto 2", "Mensaje 6", "test2@demo.com",  folder.getAbsolutePath() + "/foto7", 0, new Date().toString());
+        photoService.savePhoto(photoEntity);
     }
 }

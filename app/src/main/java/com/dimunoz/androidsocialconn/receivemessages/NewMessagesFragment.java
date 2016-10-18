@@ -155,13 +155,6 @@ public class NewMessagesFragment extends BaseDisplayMessageFragment {
         this.mainMessage.setText(this.currentMessage.getContent());
         this.mainMessageDetails.setText(Utils.createTimeStringFromTimestampMillisecondsLong(
                 this.currentMessage.getDatetime().getTime()));
-        if (this.currentMessage.getHasAttachedAudio()) {
-            logType = "messageWithAudio";
-        } else if (this.currentMessage.getHasAttachedImage()) {
-            logType = "messageWithImage";
-        } else if (this.currentMessage.getHasAttachedVideo()) {
-            logType = "messageWithVideo";
-        }
         if (this.currentMessage.getHasAttachedImage()) {
             setLeftProfilePictureImage(this.currentMessage.getImageFile());
         } else {

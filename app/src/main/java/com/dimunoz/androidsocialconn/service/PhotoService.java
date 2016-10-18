@@ -24,19 +24,19 @@ public class PhotoService {
         photoDB = new PhotoDB(context);
     }
 
-    public List<PhotoEntity> getPhotos(String email){
+    public List<PhotoEntity> getPhotos(String email) {
         return photoDB.getPhotosByEmail(email);
     }
 
-    public List<PhotoEntity> getNewPhotos(){
+    public List<PhotoEntity> getNewPhotos() {
         return photoDB.getNewPhotos();
     }
 
-    public List<PhotoEntity> getLastTenPhotos(){
+    public List<PhotoEntity> getLastTenPhotos() {
         return photoDB.getLastTenPhotos();
     }
 
-    public long savePhoto(PersonalMessage pm, MimeBodyPart part, String localFileName){
+    public long savePhoto(PersonalMessage pm, MimeBodyPart part, String localFileName) {
         try {
             File localFile = new File(localFileName);
             part.saveFile(localFile);
@@ -44,15 +44,19 @@ public class PhotoService {
             PhotoEntity photoEntity = new PhotoEntity(pm.getAuthor().getNickname(), pm.getContent(), pm.getAuthor().getEmail(), localFileName, 0, new Date().toString());
             return photoDB.insertPhoto(photoEntity);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
     }
 
-    public Bitmap getPhoto(String path){
-        File imgFile = new  File(path);
-        if(imgFile.exists())
+    public long savePhoto(PhotoEntity photoEntity) {
+        return photoDB.insertPhoto(photoEntity);
+    }
+
+    public Bitmap getPhoto(String path) {
+        File imgFile = new File(path);
+        if (imgFile.exists())
             return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
         return null;
     }

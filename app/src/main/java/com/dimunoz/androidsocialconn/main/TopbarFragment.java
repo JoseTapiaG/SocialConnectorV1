@@ -83,26 +83,26 @@ public class TopbarFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.topbar_layout_call:
                 changeTopbarColorsAndLimits(R.id.topbar_layout_call);
-                ((MainActivity)getActivity()).displayCallFragment();
+                ((MainActivity) getActivity()).displayCallFragment();
                 break;
             case R.id.topbar_layout_send_message:
                 changeTopbarColorsAndLimits(R.id.topbar_layout_send_message);
-                ((MainActivity)getActivity()).displaySendMessageFragment();
+                ((MainActivity) getActivity()).displaySendMessageFragment();
                 break;
             case R.id.topbar_layout_new_messages:
                 changeTopbarColorsAndLimits(R.id.topbar_layout_new_messages);
-                ((MainActivity)getActivity()).displayNewMessagesFragment();
+                ((MainActivity) getActivity()).displayNewMessagesFragment();
                 break;
             case R.id.topbar_layout_new_photos:
                 if (!photoService.getNewPhotos().isEmpty()) {
                     changeTopbarColorsAndLimits(R.id.topbar_layout_new_photos);
                     ((MainActivity) getActivity()).displayNewPhotosFragment();
-                }
-                Toast.makeText(getActivity(), "No hay fotos nuevas para mostrar", Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(getActivity(), "No hay fotos nuevas para mostrar", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.topbar_layout_album:
                 changeTopbarColorsAndLimits(R.id.topbar_layout_album);
-                ((MainActivity)getActivity()).displayAlbumFragment();
+                ((MainActivity) getActivity()).displayAlbumFragment();
                 break;
         }
     }

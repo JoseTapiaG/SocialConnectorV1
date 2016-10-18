@@ -75,7 +75,7 @@ public class GetEmailsFromGmail extends AsyncTask<Void, Void, Void> {
         this.activity = activity;
         this.mailList = new ArrayList<>();
         Date d = new Date();
-        this.dateBefore = date.length > 0 ? date[0] : new Date(d.getTime() - 7 * 24 * 3600 * 1000 );
+        this.dateBefore = date.length > 0 ? date[0] : new Date(d.getTime() - 7 * 24 * 3600 * 1000);
         this.newMessagesCounter = 0;
     }
 
@@ -88,7 +88,7 @@ public class GetEmailsFromGmail extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        try {
+        /*try {
             Log.d(TAG, "Inicio " + DateFormat.getDateTimeInstance().format(new Date()));
             localMessagesArray = new ArrayList<>();
             Folder received = MainActivity.imapStore.getFolder("INBOX");
@@ -145,6 +145,36 @@ public class GetEmailsFromGmail extends AsyncTask<Void, Void, Void> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;*/
+
+        if (localMessagesArray == null)
+            localMessagesArray = new ArrayList<>();
+
+        localMessagesArray.clear();
+
+        PersonalMessage pm = new PersonalMessage();
+        pm.setAuthor(new XmlContact(1, "test1@demo.com", "asd", "Test1 Nuevo", null, "asd"));
+        pm.setContent("Mensaje nuevo 1");
+        pm.setDatetime(new Date());
+        pm.setSeen(false);
+        localMessagesArray.add(pm);
+
+        String filepath = Environment.getExternalStorageDirectory().getPath()
+                + "/EmailImages/test10.jpg";
+        File image = new File(filepath);
+
+        pm.setImageFile(image);
+        pm.setHasAttachedImage(true);
+
+        MainActivity.newMessagesList = localMessagesArray;
+
+        MainActivity.setNewMessagesCounter(localMessagesArray.size());
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Utils.changeBadgeNewMessagesText(activity);
+            }
+        });
         return null;
     }
 
@@ -153,12 +183,12 @@ public class GetEmailsFromGmail extends AsyncTask<Void, Void, Void> {
         Log.d(TAG, "scheduledFuture.cancel(false);");
     }
 
-    private void addMessagesToLocalArray ( Folder folder ) {
+    private void addMessagesToLocalArray(Folder folder) {
         try {
             // get messages between now and one week before
             folder.open(Folder.READ_ONLY);
             Date d = new Date();
-            this.dateBefore = new Date(d.getTime() - 7 * 24 * 3600 * 1000 );
+            this.dateBefore = new Date(d.getTime() - 7 * 24 * 3600 * 1000);
             SearchTerm newerThan = new ReceivedDateTerm(ComparisonTerm.GT, dateBefore);
             SearchTerm flagTerm = new FlagTerm(new Flags(Flags.Flag.SEEN), false);
             SearchTerm dateSeenTerm = new AndTerm(newerThan, flagTerm);
@@ -169,7 +199,7 @@ public class GetEmailsFromGmail extends AsyncTask<Void, Void, Void> {
             }
 
             SearchTerm orTerm = new OrTerm(new FromStringTerm(listaDirecciones.get(0)), new FromStringTerm(listaDirecciones.get(1)));
-            for(int i = 2; i < listaDirecciones.size(); i++){
+            for (int i = 2; i < listaDirecciones.size(); i++) {
                 orTerm = new OrTerm(orTerm, new FromStringTerm(listaDirecciones.get(i)));
             }
 
@@ -238,7 +268,7 @@ public class GetEmailsFromGmail extends AsyncTask<Void, Void, Void> {
                             File folder = new File(filepath);
 
                             // create folder if does not exist
-                            if (!folder.exists()){
+                            if (!folder.exists()) {
                                 Boolean b = folder.mkdirs();
                                 Log.d(TAG, "email images folder created " + b);
                             }
@@ -271,14 +301,14 @@ public class GetEmailsFromGmail extends AsyncTask<Void, Void, Void> {
     private String getText(Part p) throws
             MessagingException, IOException {
         if (p.isMimeType("text/*")) {
-            String s = (String)p.getContent();
+            String s = (String) p.getContent();
             if (p.isMimeType("text/html")) {
                 Document doc = Jsoup.parseBodyFragment(s);
-                for (Element element: doc.select("div.extra"))
+                for (Element element : doc.select("div.extra"))
                     element.remove();
-                for (Element element: doc.select("div.gmail_extra"))
+                for (Element element : doc.select("div.gmail_extra"))
                     element.remove();
-                for (Element element: doc.select("div.gmail_quote"))
+                for (Element element : doc.select("div.gmail_quote"))
                     element.remove();
                 s = doc.outerHtml();
                 s = s.replaceAll("\\n ", "<asdfasdf>");
@@ -298,14 +328,14 @@ public class GetEmailsFromGmail extends AsyncTask<Void, Void, Void> {
                 s = s.replaceAll("&nbsp;", " ");
                 s = s.replaceAll("\\s\\s+", " ");
                 s = s.replaceAll("\\<.*?>", "");
-                s = s.replace('\t','\0');
+                s = s.replace('\t', '\0');
             }
             return s;
         }
 
         if (p.isMimeType("multipart/alternative")) {
             // prefer html text over plain text
-            Multipart mp = (Multipart)p.getContent();
+            Multipart mp = (Multipart) p.getContent();
             String text = null;
             for (int i = 0; i < mp.getCount(); i++) {
                 Part bp = mp.getBodyPart(i);
@@ -322,7 +352,7 @@ public class GetEmailsFromGmail extends AsyncTask<Void, Void, Void> {
             }
             return text;
         } else if (p.isMimeType("multipart/*")) {
-            Multipart mp = (Multipart)p.getContent();
+            Multipart mp = (Multipart) p.getContent();
             for (int i = 0; i < mp.getCount(); i++) {
                 String s = getText(mp.getBodyPart(i));
                 if (s != null)
