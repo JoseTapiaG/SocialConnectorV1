@@ -162,4 +162,9 @@ public class PhotoDB {
         db.close();
         return photos;
     }
+
+    public void resetDB(){
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        SocialConnectorDBHelper.reset(db);
+    }
 }

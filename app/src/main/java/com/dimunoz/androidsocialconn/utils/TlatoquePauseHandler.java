@@ -31,7 +31,7 @@ public class TlatoquePauseHandler {
 
     private String TAG = "TlatoquePauseHandler";
 
-    private final static int SECONDS_TO_SLEEP_AFTER_PAUSE = 10;
+    private final static int SECONDS_TO_SLEEP_AFTER_PAUSE = 120;
 
     private ScheduledExecutorService pauseTimer;
     private MainActivity activity;

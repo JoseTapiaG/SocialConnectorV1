@@ -3,6 +3,7 @@ package com.dimunoz.androidsocialconn.main;
 import android.app.Fragment;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.percent.PercentRelativeLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,6 +70,9 @@ public class TopbarFragment extends Fragment implements View.OnClickListener {
         newPhotosLayout.setOnClickListener(this);
         PercentRelativeLayout albumLayout = (PercentRelativeLayout) topbarLayout.findViewById(R.id.topbar_layout_album);
         albumLayout.setOnClickListener(this);
+        FloatingActionButton resetButton = (FloatingActionButton) topbarLayout.findViewById(R.id.resetButton);
+        resetButton.setOnClickListener(this);
+
 
         // set badges initially invisible
         TextView badgeNewMessages = (TextView) topbarLayout.findViewById(R.id.badge_new_messages);
@@ -82,8 +86,8 @@ public class TopbarFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.topbar_layout_call:
-                changeTopbarColorsAndLimits(R.id.topbar_layout_call);
-                ((MainActivity) getActivity()).displayCallFragment();
+                //changeTopbarColorsAndLimits(R.id.topbar_layout_call);
+                //((MainActivity) getActivity()).displayCallFragment();
                 break;
             case R.id.topbar_layout_send_message:
                 changeTopbarColorsAndLimits(R.id.topbar_layout_send_message);
@@ -103,6 +107,9 @@ public class TopbarFragment extends Fragment implements View.OnClickListener {
             case R.id.topbar_layout_album:
                 changeTopbarColorsAndLimits(R.id.topbar_layout_album);
                 ((MainActivity) getActivity()).displayAlbumFragment();
+                break;
+            case R.id.resetButton:
+                MainActivity.photoService.resetDatabase(getActivity());
                 break;
         }
     }

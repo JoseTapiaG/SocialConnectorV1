@@ -255,5 +255,12 @@
             android:layout_below="@+id/topbar_text_album"
             android:background="@android:color/black"
             />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:id="@+id/resetButton"
+            android:src="@drawable/ic_cached_black_24dp"/>
     </android.support.percent.PercentRelativeLayout>
+
 </android.support.percent.PercentRelativeLayout>

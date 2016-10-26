@@ -153,18 +153,36 @@ public class GetEmailsFromGmail extends AsyncTask<Void, Void, Void> {
         localMessagesArray.clear();
 
         PersonalMessage pm = new PersonalMessage();
-        pm.setAuthor(new XmlContact(1, "test1@demo.com", "asd", "Test1 Nuevo", null, "asd"));
-        pm.setContent("Mensaje nuevo 1");
+        pm.setAuthor(new XmlContact(1, "test5@demo.com", "asd", "Andrés", null, "asd"));
+        pm.setContent("Mira lo que te perdiste");
         pm.setDatetime(new Date());
         pm.setSeen(false);
-        localMessagesArray.add(pm);
+
 
         String filepath = Environment.getExternalStorageDirectory().getPath()
-                + "/EmailImages/test10.jpg";
+                + "/EmailImages/14.jpg";
         File image = new File(filepath);
 
         pm.setImageFile(image);
         pm.setHasAttachedImage(true);
+
+        PersonalMessage pm1 = new PersonalMessage();
+        pm1.setAuthor(new XmlContact(1, "test6@demo.com", "asd", "Pamela", null, "asd"));
+        pm1.setContent("Saludos desde Roma");
+        pm1.setDatetime(new Date());
+        pm1.setSeen(false);
+
+        filepath = Environment.getExternalStorageDirectory().getPath()
+                + "/EmailImages/15.jpg";
+        File image1 = new File(filepath);
+
+        pm1.setImageFile(image1);
+        pm1.setHasAttachedImage(true);
+
+        localMessagesArray.add(pm);
+        localMessagesArray.add(pm1);
+
+
 
         MainActivity.newMessagesList = localMessagesArray;
 

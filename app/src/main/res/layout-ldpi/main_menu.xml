@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.dimunoz.androidsocialconn.views.LoggableLinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/mainLinearLayout"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical" >
+<com.dimunoz.androidsocialconn.views.LoggableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <fragment class="com.dimunoz.androidsocialconn.main.TopbarFragment"
-              android:id="@+id/topbarFragment"
-              android:layout_weight="30"
-              android:layout_width="match_parent"
-              android:layout_height="0px" />
-    <FrameLayout android:id="@+id/fragment_container"
-                 android:layout_weight="70"
-                 android:layout_width="match_parent"
-                 android:layout_height="0px" />
+    <fragment
+        android:id="@+id/topbarFragment"
+        class="com.dimunoz.androidsocialconn.main.TopbarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="30" />
 
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="70" />
 </com.dimunoz.androidsocialconn.views.LoggableLinearLayout>

@@ -480,13 +480,10 @@ public class MainActivity extends Activity {
                     "   </owner>" +
                     "</owners>" +
                     "<contacts>" +
-                    "   <contact><id>0</id><nickname>Jose</nickname><photo>http://a5.mzstatic.com/us/r30/Purple5/v4/5a/2e/e9/5a2ee9b3-8f0e-4f8b-4043-dd3e3ea29766/icon128-2x.png</photo><email>jose.wt@gmail.com</email><skype></skype><instagram>sochoa2525</instagram></contact>" +
-                    "   <contact><id>1</id><nickname>Sergio</nickname><photo>http://a5.mzstatic.com/us/r30/Purple5/v4/5a/2e/e9/5a2ee9b3-8f0e-4f8b-4043-dd3e3ea29766/icon128-2x.png</photo><email>sochoa@dcc.uchile.cl</email><skype>sergio.ochoa51</skype><instagram>sochoa2525</instagram></contact>" +
-//                    "   <contact><id>2</id><nickname>Carla</nickname><photo>http://a5.mzstatic.com/us/r30/Purple5/v4/5a/2e/e9/5a2ee9b3-8f0e-4f8b-4043-dd3e3ea29766/icon128-2x.png</photo><email>sambrizzicarla@gmail.com</email><skype>carla.sambrizzi</skype><instagram></instagram></contact>" +
-//                    "   <contact><id>3</id><nickname>Juanma</nickname><photo>http://a5.mzstatic.com/us/r30/Purple5/v4/5a/2e/e9/5a2ee9b3-8f0e-4f8b-4043-dd3e3ea29766/icon128-2x.png</photo><email>juan.ochoa@ug.uchile.cl</email><skype>juanma8a</skype><instagram></instagram></contact>" +
-//                    "   <contact><id>4</id><nickname>Rocío</nickname><photo></photo><email>rocio8aastorga@hotmail.com</email><skype>rocio.ochoa.astorga</skype><instagram>ro.ochoaastorga</instagram></contact>" +
-//                    "   <contact><id>5</id><nickname>Daniel</nickname><photo>http://a5.mzstatic.com/us/r30/Purple5/v4/5a/2e/e9/5a2ee9b3-8f0e-4f8b-4043-dd3e3ea29766/icon128-2x.png</photo><email>daniel-ochoa@hotmail.com</email><skype>danielochoa66</skype><instagram></instagram></contact>" +
-//                    "   <contact><id>6</id><nickname>Pablo</nickname><photo>http://a5.mzstatic.com/us/r30/Purple5/v4/5a/2e/e9/5a2ee9b3-8f0e-4f8b-4043-dd3e3ea29766/icon128-2x.png</photo><email>pablo_8a@live.com</email><skype>pabloj.8a</skype><instagram></instagram></contact>" +
+                    "   <contact><id>0</id><nickname>Jose</nickname><photo>11.jpg</photo><email>test1@demo.com</email><skype></skype><instagram>sochoa2525</instagram></contact>" +
+                    "   <contact><id>1</id><nickname>Natalia</nickname><photo>10.jpeg</photo><email>test2@demo.com</email><skype>sergio.ochoa51</skype><instagram>sochoa2525</instagram></contact>" +
+                    "   <contact><id>2</id><nickname>Victor</nickname><photo>12.jpg</photo><email>test3@demo.com</email><skype>sergio.ochoa51</skype><instagram>sochoa2525</instagram></contact>" +
+                    "   <contact><id>4</id><nickname>Javiera</nickname><photo>13.jpg</photo><email>test4@demo.com</email><skype>sergio.ochoa51</skype><instagram>sochoa2525</instagram></contact>" +
                     "</contacts>");
             myOutWriter.close();
             fOut.close();
@@ -511,7 +508,8 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void loadBD() {
+    public static void loadBD() {
+
         String filepath = Environment.getExternalStorageDirectory().getPath()
                 + "/EmailImages";
         File folder = new File(filepath);
@@ -522,25 +520,31 @@ public class MainActivity extends Activity {
             Log.d(TAG, "email images folder created " + b);
         }
 
-        PhotoEntity photoEntity = new PhotoEntity("Contacto 1", "Mensaje 1", "test1@demo.com",  folder.getAbsolutePath() + "/foto1", 0, new Date().toString());
+        PhotoEntity photoEntity = new PhotoEntity("Jose", "Papá, te mando esta foto para que veas lo grande que están", "test1@demo.com",  folder.getAbsolutePath() + "/1.jpg", 0, new Date().toString());
         photoService.savePhoto(photoEntity);
 
-        photoEntity = new PhotoEntity("Contacto 1", "Mensaje 2", "test1@demo.com",  folder.getAbsolutePath() + "/foto2", 0, new Date().toString());
+        photoEntity = new PhotoEntity("Jose", "Que linda pelicula", "test1@demo.com",  folder.getAbsolutePath() + "/2.jpg", 0, new Date().toString());
         photoService.savePhoto(photoEntity);
 
-        photoEntity = new PhotoEntity("Contacto 1", "Mensaje 3", "test1@demo.com",  folder.getAbsolutePath() + "/foto3", 0, new Date().toString());
+        photoEntity = new PhotoEntity("Natalia", "Su primer halloween", "test2@demo.com",  folder.getAbsolutePath() + "/3.jpg", 0, new Date().toString());
         photoService.savePhoto(photoEntity);
 
-        photoEntity = new PhotoEntity("Contacto 1", "Mensaje 4", "test1@demo.com",  folder.getAbsolutePath() + "/foto4", 0, new Date().toString());
+        photoEntity = new PhotoEntity("Natalia", "Lindo día en el parque", "test2@demo.com",  folder.getAbsolutePath() + "/4.jpg", 0, new Date().toString());
         photoService.savePhoto(photoEntity);
 
-        photoEntity = new PhotoEntity("Contacto 2", "Mensaje 5", "test2@demo.com",  folder.getAbsolutePath() + "/foto5", 0, new Date().toString());
+        photoEntity = new PhotoEntity("Victor", "Que día tan caluroso", "test3@demo.com",  folder.getAbsolutePath() + "/5.jpg", 0, new Date().toString());
         photoService.savePhoto(photoEntity);
 
-        photoEntity = new PhotoEntity("Contacto 2", "Mensaje 6", "test2@demo.com",  folder.getAbsolutePath() + "/foto6", 0, new Date().toString());
+        photoEntity = new PhotoEntity("Victor", "A la playa!!!", "test3@demo.com",  folder.getAbsolutePath() + "/6.jpg", 0, new Date().toString());
         photoService.savePhoto(photoEntity);
 
-        photoEntity = new PhotoEntity("Contacto 2", "Mensaje 6", "test2@demo.com",  folder.getAbsolutePath() + "/foto7", 0, new Date().toString());
+        photoEntity = new PhotoEntity("Javiera", "Feliz aniversario con mi esposo", "test4@demo.com",  folder.getAbsolutePath() + "/7.jpg", 0, new Date().toString());
+        photoService.savePhoto(photoEntity);
+
+        photoEntity = new PhotoEntity("Javiera", "Una artista", "test4@demo.com",  folder.getAbsolutePath() + "/8.jpg", 0, new Date().toString());
+        photoService.savePhoto(photoEntity);
+
+        photoEntity = new PhotoEntity("Javiera", "Ven a tomar té, te echo de menos", "test4@demo.com",  folder.getAbsolutePath() + "/9.jpg", 0, new Date().toString());
         photoService.savePhoto(photoEntity);
     }
 }

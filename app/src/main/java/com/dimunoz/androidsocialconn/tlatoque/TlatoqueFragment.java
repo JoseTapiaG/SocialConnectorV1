@@ -581,7 +581,7 @@ public class TlatoqueFragment extends Fragment {
         pictureCaption = !pictureCaption.equals("") ? "<br>" + pictureCaption : "";
 
         tvCaption.setText(Html.fromHtml("<font color='#ff203d94'><b>" +
-                "Usuario test" + " " + creationDate +
+                picture.getContactName() + " " + creationDate +
                 "</b></font>" + pictureCaption));
 
         // set owner's picture

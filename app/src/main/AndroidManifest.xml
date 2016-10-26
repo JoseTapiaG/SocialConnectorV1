@@ -25,7 +25,7 @@
         android:label="@string/app_name"
         android:icon="@drawable/ic_launcher"
         android:name="com.persistance.SocialconnApplication"
-        android:theme="@android:style/Theme.NoTitleBar">
+        android:theme="@style/Theme.AppCompat.NoActionBar">
 
         <activity
             android:name=".main.MainActivity"

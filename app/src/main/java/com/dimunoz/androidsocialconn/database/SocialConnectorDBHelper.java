@@ -44,4 +44,9 @@ public class SocialConnectorDBHelper extends SQLiteOpenHelper {
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
     }
+
+    public static void reset(SQLiteDatabase db){
+        db.execSQL(SQL_DELETE_PHOTOS);
+        db.execSQL(SQL_CREATE_ENTRIES);
+    }
 }

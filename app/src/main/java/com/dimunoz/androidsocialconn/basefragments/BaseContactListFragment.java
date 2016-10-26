@@ -3,6 +3,7 @@ package com.dimunoz.androidsocialconn.basefragments;
 import android.app.Fragment;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.percent.PercentRelativeLayout;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.dimunoz.androidsocialconn.R;
 import com.dimunoz.androidsocialconn.gesture.ContactListGestureDetector;
+import com.dimunoz.androidsocialconn.main.MainActivity;
 import com.dimunoz.androidsocialconn.xml.XmlContact;
 import com.loopj.android.image.SmartImageView;
 
@@ -187,7 +189,10 @@ public class BaseContactListFragment extends Fragment {
 
     private void setAvatar(XmlContact contact, SmartImageView view) {
         if (contact.getPhoto() != null) {
-            view.setImageUrl(contact.getPhoto());
+            String folder = Environment.getExternalStorageDirectory().getPath()
+                    + "/EmailImages/";
+            String path = folder + contact.getPhoto();
+            view.setImageBitmap(MainActivity.photoService.getPhoto(path));
         }
     }
 }
