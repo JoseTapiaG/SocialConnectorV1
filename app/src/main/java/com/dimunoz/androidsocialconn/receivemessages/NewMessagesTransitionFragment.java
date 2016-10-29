@@ -112,8 +112,13 @@ public class NewMessagesTransitionFragment extends Fragment {
                         }
                     } else {
                         if (!MainActivity.checkingNewEmails) {
-                            TextView tv = (TextView) contentLayout.findViewById(R.id.default_text);
-                            tv.setText("No tienes nuevos mensajes.");
+                            TextView defaultText = (TextView) contentLayout.findViewById(R.id.default_text);
+                            defaultText.setVisibility(View.GONE);
+                            TextView responseText = (TextView) contentLayout.findViewById(R.id.response_text);
+                            responseText.setText("No tienes nuevos mensajes.");
+                            responseText.setVisibility(View.VISIBLE);
+                            GifView gv = (GifView) contentLayout.findViewById(R.id.default_gif);
+                            gv.setVisibility(View.GONE);
                             scheduledFuture.cancel(false);
                         }
                     }

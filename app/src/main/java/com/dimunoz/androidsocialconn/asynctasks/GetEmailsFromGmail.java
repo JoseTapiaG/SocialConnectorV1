@@ -122,10 +122,13 @@ public class GetEmailsFromGmail extends AsyncTask<Void, Void, Void> {
                                             transaction.commit();
                                             Utils.changeBadgeNewMessagesText(activity);
                                         } else {
-                                            TextView tv = (TextView) currentFragment.getActivity().findViewById(R.id.default_text);
-                                            tv.setText("No tienes nuevos mensajes.");
+                                            TextView defaultText = (TextView) currentFragment.getActivity().findViewById(R.id.default_text);
+                                            defaultText.setVisibility(View.GONE);
+                                            TextView responseText = (TextView) currentFragment.getActivity().findViewById(R.id.response_text);
+                                            responseText.setText("No tienes nuevos mensajes.");
+                                            responseText.setVisibility(View.VISIBLE);
                                             GifView gv = (GifView) currentFragment.getActivity().findViewById(R.id.default_gif);
-                                            gv.setVisibility(View.INVISIBLE);
+                                            gv.setVisibility(View.GONE);
                                         }
                                         MainActivity.messagesDownloaded = true;
                                         MainActivity.checkingNewEmails = false;

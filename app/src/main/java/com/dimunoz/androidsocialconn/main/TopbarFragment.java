@@ -94,11 +94,8 @@ public class TopbarFragment extends Fragment implements View.OnClickListener {
                 ((MainActivity)getActivity()).displayNewMessagesFragment();
                 break;
             case R.id.topbar_layout_new_photos:
-                if (!photoService.getNewPhotos().isEmpty()) {
-                    changeTopbarColorsAndLimits(R.id.topbar_layout_new_photos);
-                    ((MainActivity) getActivity()).displayNewPhotosFragment();
-                }
-                Toast.makeText(getActivity(), "No hay fotos nuevas para mostrar", Toast.LENGTH_SHORT).show();
+                changeTopbarColorsAndLimits(R.id.topbar_layout_new_photos);
+                ((MainActivity) getActivity()).displayNewPhotosFragment();
                 break;
             case R.id.topbar_layout_album:
                 changeTopbarColorsAndLimits(R.id.topbar_layout_album);

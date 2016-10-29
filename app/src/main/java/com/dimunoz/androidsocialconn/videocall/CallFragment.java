@@ -56,8 +56,14 @@ public class CallFragment extends BaseContactListFragment {
 
     protected void filterContacts() {
         filteredContacts.clear();
-        for (XmlContact contact : MainActivity.xmlContacts) {
+        /*for (XmlContact contact : MainActivity.xmlContacts) {
             if (androidSkypeContacts.contains(contact.getSkype())) {
+                filteredContacts.add(contact);
+            }
+        }*/
+
+        for (XmlContact contact : MainActivity.xmlContacts) {
+            if (contact.getSkype() != null && !contact.getSkype().isEmpty()) {
                 filteredContacts.add(contact);
             }
         }

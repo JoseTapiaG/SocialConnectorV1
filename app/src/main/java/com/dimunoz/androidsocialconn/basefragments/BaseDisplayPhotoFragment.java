@@ -33,6 +33,7 @@ public class BaseDisplayPhotoFragment extends Fragment {
     public PhotoEntity currentPhoto;
     public TextView leftArrow;
     public TextView rightArrow;
+    public TextView emptyPhotoList;
     public SmartImageView photo;
     public TextView photoAuthor;
     public TextView photoCaption;
@@ -50,6 +51,7 @@ public class BaseDisplayPhotoFragment extends Fragment {
         // define interface elements
         this.leftArrow = (TextView) contentLayout.findViewById(R.id.left_arrow);
         this.rightArrow = (TextView) contentLayout.findViewById(R.id.right_arrow);
+        this.emptyPhotoList = (TextView) contentLayout.findViewById(R.id.empty_photo_list);
         this.photo = (SmartImageView) contentLayout.findViewById(R.id.display_photo);
         this.photoAuthor = (TextView) contentLayout.findViewById(R.id.display_photo_author);
         this.photoCaption = (TextView) contentLayout.findViewById(R.id.display_photo_caption);

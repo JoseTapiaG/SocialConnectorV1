@@ -56,8 +56,17 @@ public class NewPhotosFragment extends BaseDisplayPhotoFragment {
         contentLayout.setBackgroundColor(getResources().getColor(R.color.NewPhotos));
 
         // set current photo image
-        changePhoto();
-
+        if(MainActivity.newPhotosList.isEmpty()) {
+            setStartSeeEmptyPhotoList();
+            this.emptyPhotoList.setVisibility(View.VISIBLE);
+            this.photoAuthor.setVisibility(View.GONE);
+            this.photoCaption.setVisibility(View.GONE);
+            this.photoCount.setVisibility(View.GONE);
+        }
+        else {
+            changePhoto();
+            markCurrentPhotoAsSeen();
+        }
         // set arrow visibility
         this.leftArrow.setVisibility(View.INVISIBLE);
         if (MainActivity.newPhotosList.size() > 1)
@@ -66,7 +75,6 @@ public class NewPhotosFragment extends BaseDisplayPhotoFragment {
             this.rightArrow.setVisibility(View.INVISIBLE);
         this.photoCount.setText("Foto 1 de " + MainActivity.newPhotosList.size());
 
-        markCurrentPhotoAsSeen();
 
         return contentLayout;
     }
@@ -81,6 +89,15 @@ public class NewPhotosFragment extends BaseDisplayPhotoFragment {
         Log.d(TAG, "handleRightArrowTapEvent");
         BUTTON = RIGHT;
         new LoadingPhoto().execute();
+    }
+
+    private void setStartSeeEmptyPhotoList(){
+        Calendar cal = Calendar.getInstance();
+        SharedPreferences.Editor editor;
+        editor = settings.edit();
+        editor.putLong(getActivity().getApplicationContext().getString(R.string.new_photos_empty_begin_see),
+                cal.getTimeInMillis());
+        editor.apply();
     }
 
     private void changePhoto() {

@@ -324,6 +324,14 @@ public class Utils {
         writeToFile(data, filename);
     }
 
+    public static void logNewPhotosEmpty(Long readBegin, Long readEnd) {
+        Log.d(TAG, "logNewPhotosEmptyEvent");
+        String data = "newPhotosEmpty," + + readBegin + "," + readEnd;
+        Calendar c = Calendar.getInstance();
+        String filename = getLogServiceFilename(c);
+        writeToFile(data, filename);
+    }
+
     public static void logSendMessageEvent(String sender, String receiver, Long timestamp) {
         Log.d(TAG, "logSendMessageEvent");
         String data = "sendMessage," + sender + "," + receiver + "," + timestamp;

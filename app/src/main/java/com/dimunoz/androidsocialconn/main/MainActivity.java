@@ -280,6 +280,14 @@ public class MainActivity extends Activity {
                 photo_begin_see, cal.getTimeInMillis());
     }
 
+    private void logNewPhotosEmpty() {
+        Long photo_begin_see = settings.getLong(
+                getApplicationContext().getString(R.string.new_photos_empty_begin_see),
+                -1);
+        Calendar cal = Calendar.getInstance();
+        Utils.logNewPhotosEmpty(photo_begin_see, cal.getTimeInMillis());
+    }
+
     public void displayCallFragment() {
         FragmentManager fragmentManager = getFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG);
@@ -289,8 +297,11 @@ public class MainActivity extends Activity {
             transaction.replace(R.id.fragment_container, callFragment, FRAGMENT_TAG);
             transaction.commit();
             if (currentFragment instanceof NewPhotosFragment) {
-                logNewPhoto(currentFragment);
-                checkSeenNewPhotos();
+                if (!newPhotosList.isEmpty()) {
+                    logNewPhoto(currentFragment);
+                    checkSeenNewPhotos();
+                } else
+                    logNewPhotosEmpty();
             } else if (currentFragment instanceof AlbumPhotoFragment) {
                 logAlbumPhoto(currentFragment);
             }
@@ -308,8 +319,11 @@ public class MainActivity extends Activity {
             transaction.replace(R.id.fragment_container, sendMessageFragment, FRAGMENT_TAG);
             transaction.commit();
             if (currentFragment instanceof NewPhotosFragment) {
-                logNewPhoto(currentFragment);
-                checkSeenNewPhotos();
+                if (!newPhotosList.isEmpty()) {
+                    logNewPhoto(currentFragment);
+                    checkSeenNewPhotos();
+                } else
+                    logNewPhotosEmpty();
             } else if (currentFragment instanceof AlbumPhotoFragment) {
                 logAlbumPhoto(currentFragment);
             }
@@ -325,8 +339,11 @@ public class MainActivity extends Activity {
             transaction.replace(R.id.fragment_container, newMessagesFragment, FRAGMENT_TAG);
             transaction.commit();
             if (currentFragment instanceof NewPhotosFragment) {
-                logNewPhoto(currentFragment);
-                checkSeenNewPhotos();
+                if (!newPhotosList.isEmpty()) {
+                    logNewPhoto(currentFragment);
+                    checkSeenNewPhotos();
+                } else
+                    logNewPhotosEmpty();
             } else if (currentFragment instanceof AlbumPhotoFragment) {
                 logAlbumPhoto(currentFragment);
             }
@@ -358,8 +375,11 @@ public class MainActivity extends Activity {
             transaction.replace(R.id.fragment_container, albumContactsFragment, FRAGMENT_TAG);
             transaction.commit();
             if (currentFragment instanceof NewPhotosFragment) {
-                logNewPhoto(currentFragment);
-                checkSeenNewPhotos();
+                if (!newPhotosList.isEmpty()) {
+                    logNewPhoto(currentFragment);
+                    checkSeenNewPhotos();
+                } else
+                    logNewPhotosEmpty();
             } else if (currentFragment instanceof AlbumPhotoFragment) {
                 logAlbumPhoto(currentFragment);
             }
@@ -422,9 +442,10 @@ public class MainActivity extends Activity {
 
     public void writeTempFile() {
         File myFile = new File(Environment.getExternalStorageDirectory(), "SocialConnContacts.xml");
-        try {
-            FileOutputStream fOut = new FileOutputStream(myFile);
-            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+        if (!myFile.exists()) {
+            try {
+                FileOutputStream fOut = new FileOutputStream(myFile);
+                OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
             /*myOutWriter.append("<?xml version=\"1.0\"?>" +
                     "<contacts>" +
                     "   <contact>" +
@@ -452,30 +473,31 @@ public class MainActivity extends Activity {
                     "       <instagram>sanguxe</instagram>" +
                     "   </contact>" +
                     "</contacts>");*/
-            myOutWriter.append("<?xml version=\"1.0\"?>" +
-                    "<owners>" +
-                    "   <owner>" +
-                    "       <id>0</id>" +
-                    "       <nickname>Jose Manuel</nickname>" +
-                    "       <photo></photo>" +
-                    "       <email>jose.wt@gmail.com</email>" +
-                    "       <skype></skype>" +
-                    "       <instagram></instagram>" +
-                    "   </owner>" +
-                    "</owners>" +
-                    "<contacts>" +
-                    "   <contact><id>0</id><nickname>Jose</nickname><photo>http://a5.mzstatic.com/us/r30/Purple5/v4/5a/2e/e9/5a2ee9b3-8f0e-4f8b-4043-dd3e3ea29766/icon128-2x.png</photo><email>jose.wt@gmail.com</email><skype></skype><instagram>sochoa2525</instagram></contact>" +
-                    "   <contact><id>1</id><nickname>Sergio</nickname><photo>http://a5.mzstatic.com/us/r30/Purple5/v4/5a/2e/e9/5a2ee9b3-8f0e-4f8b-4043-dd3e3ea29766/icon128-2x.png</photo><email>sochoa@dcc.uchile.cl</email><skype>sergio.ochoa51</skype><instagram>sochoa2525</instagram></contact>" +
-//                    "   <contact><id>2</id><nickname>Carla</nickname><photo>http://a5.mzstatic.com/us/r30/Purple5/v4/5a/2e/e9/5a2ee9b3-8f0e-4f8b-4043-dd3e3ea29766/icon128-2x.png</photo><email>sambrizzicarla@gmail.com</email><skype>carla.sambrizzi</skype><instagram></instagram></contact>" +
-//                    "   <contact><id>3</id><nickname>Juanma</nickname><photo>http://a5.mzstatic.com/us/r30/Purple5/v4/5a/2e/e9/5a2ee9b3-8f0e-4f8b-4043-dd3e3ea29766/icon128-2x.png</photo><email>juan.ochoa@ug.uchile.cl</email><skype>juanma8a</skype><instagram></instagram></contact>" +
+                myOutWriter.append("<?xml version=\"1.0\"?>" +
+                        "<owners>" +
+                        "   <owner>" +
+                        "       <id>0</id>" +
+                        "       <nickname>Jose Manuel</nickname>" +
+                        "       <photo></photo>" +
+                        "       <email>jose.wt@gmail.com</email>" +
+                        "       <skype></skype>" +
+                        "       <instagram></instagram>" +
+                        "   </owner>" +
+                        "</owners>" +
+                        "<contacts>" +
+                        "   <contact><id>0</id><nickname>Jose</nickname><photo>http://a5.mzstatic.com/us/r30/Purple5/v4/5a/2e/e9/5a2ee9b3-8f0e-4f8b-4043-dd3e3ea29766/icon128-2x.png</photo><email>jose.wt@gmail.com</email><skype></skype><instagram>sochoa2525</instagram></contact>" +
+                        "   <contact><id>1</id><nickname>Sergio</nickname><photo>http://a5.mzstatic.com/us/r30/Purple5/v4/5a/2e/e9/5a2ee9b3-8f0e-4f8b-4043-dd3e3ea29766/icon128-2x.png</photo><email>sochoa@dcc.uchile.cl</email><skype>sergio.ochoa51</skype><instagram>sochoa2525</instagram></contact>" +
+                        "   <contact><id>2</id><nickname>Carla</nickname><photo>http://a5.mzstatic.com/us/r30/Purple5/v4/5a/2e/e9/5a2ee9b3-8f0e-4f8b-4043-dd3e3ea29766/icon128-2x.png</photo><email>test@gmail.com</email><skype>carla.sambrizzi</skype><instagram></instagram></contact>" +
+                        "   <contact><id>3</id><nickname>Juanma</nickname><photo>http://a5.mzstatic.com/us/r30/Purple5/v4/5a/2e/e9/5a2ee9b3-8f0e-4f8b-4043-dd3e3ea29766/icon128-2x.png</photo><email>test@ug.uchile.cl</email><skype>juanma8a</skype><instagram></instagram></contact>" +
 //                    "   <contact><id>4</id><nickname>Rocío</nickname><photo></photo><email>rocio8aastorga@hotmail.com</email><skype>rocio.ochoa.astorga</skype><instagram>ro.ochoaastorga</instagram></contact>" +
 //                    "   <contact><id>5</id><nickname>Daniel</nickname><photo>http://a5.mzstatic.com/us/r30/Purple5/v4/5a/2e/e9/5a2ee9b3-8f0e-4f8b-4043-dd3e3ea29766/icon128-2x.png</photo><email>daniel-ochoa@hotmail.com</email><skype>danielochoa66</skype><instagram></instagram></contact>" +
 //                    "   <contact><id>6</id><nickname>Pablo</nickname><photo>http://a5.mzstatic.com/us/r30/Purple5/v4/5a/2e/e9/5a2ee9b3-8f0e-4f8b-4043-dd3e3ea29766/icon128-2x.png</photo><email>pablo_8a@live.com</email><skype>pabloj.8a</skype><instagram></instagram></contact>" +
-                    "</contacts>");
-            myOutWriter.close();
-            fOut.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+                        "</contacts>");
+                myOutWriter.close();
+                fOut.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

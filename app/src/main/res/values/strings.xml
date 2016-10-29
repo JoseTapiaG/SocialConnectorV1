@@ -8,6 +8,7 @@
     <!-- Services Logs -->
     <string name="skype_begin_call">skype_begin_call</string>
     <string name="new_photo_begin_see">new_photo_begin_see</string>
+    <string name="new_photos_empty_begin_see">new_photos_empty_begin_see</string>
     <string name="album_photo_begin_see">album_photo_begin_see</string>
     
     <!-- Instagram -->
@@ -55,6 +56,10 @@
     <string name="dialog_message">Message</string>
     <string name="profile_pic">Profile pic</string>
     <string name="picture_caption"> </string>
+
+
+    <!-- Photos base-->
+    <string name="empty_photo_list">No hay fotos para mostrar</string>
 
     <string name="url_base">http://socialconnector.dcc.uchile.cl/</string>
 
