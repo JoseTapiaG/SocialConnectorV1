@@ -15,6 +15,7 @@ import com.dimunoz.androidsocialconn.R;
 import com.dimunoz.androidsocialconn.main.MainActivity;
 import com.dimunoz.androidsocialconn.views.GifView;
 
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -22,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by dmunoz on 25-08-15.
- *
  */
 public class NewMessagesTransitionFragment extends Fragment {
 
@@ -91,7 +91,11 @@ public class NewMessagesTransitionFragment extends Fragment {
 
                 @Override
                 public void run() {
-                    if (!MainActivity.newMessagesList.isEmpty()) {
+
+                    ArrayList<PersonalMessage> emails = MainActivity.mailService.getEmails();
+
+
+                    if (!emails.isEmpty()) {
                         Log.d(TAG, "!MainActivity.newMessagesList.isEmpty()");
                         FragmentManager fragmentManager = getActivity().getFragmentManager();
                         Fragment currentFragment = fragmentManager.findFragmentByTag(
@@ -102,25 +106,20 @@ public class NewMessagesTransitionFragment extends Fragment {
                             Log.d(TAG, "currentFragment instanceof NewMessagesTransitionFragment");
                             FragmentTransaction transaction = fragmentManager.beginTransaction();
                             NewMessagesFragment newMessagesFragment = new NewMessagesFragment();
-                            PersonalMessage message = MainActivity.newMessagesList.get(0);
-                            newMessagesFragment.contact = message.getAuthor();
-                            newMessagesFragment.currentMessage = message;
                             transaction.replace(R.id.fragment_container, newMessagesFragment,
                                     MainActivity.FRAGMENT_TAG);
                             transaction.commit();
                             scheduledFuture.cancel(false);
                         }
                     } else {
-                        if (!MainActivity.checkingNewEmails) {
-                            TextView defaultText = (TextView) contentLayout.findViewById(R.id.default_text);
-                            defaultText.setVisibility(View.GONE);
-                            TextView responseText = (TextView) contentLayout.findViewById(R.id.response_text);
-                            responseText.setText("No tienes nuevos mensajes.");
-                            responseText.setVisibility(View.VISIBLE);
-                            GifView gv = (GifView) contentLayout.findViewById(R.id.default_gif);
-                            gv.setVisibility(View.GONE);
-                            scheduledFuture.cancel(false);
-                        }
+                        TextView defaultText = (TextView) contentLayout.findViewById(R.id.default_text);
+                        defaultText.setVisibility(View.GONE);
+                        TextView responseText = (TextView) contentLayout.findViewById(R.id.response_text);
+                        responseText.setText("No tienes nuevos mensajes.");
+                        responseText.setVisibility(View.VISIBLE);
+                        GifView gv = (GifView) contentLayout.findViewById(R.id.default_gif);
+                        gv.setVisibility(View.GONE);
+                        scheduledFuture.cancel(false);
                     }
                 }
             };

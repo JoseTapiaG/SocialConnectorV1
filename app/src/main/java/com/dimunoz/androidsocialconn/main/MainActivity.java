@@ -21,8 +21,8 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.dimunoz.androidsocialconn.R;
-import com.dimunoz.androidsocialconn.asynctasks.CreateImapStore;
 import com.dimunoz.androidsocialconn.database.PhotoEntity;
+import com.dimunoz.androidsocialconn.mail.MailService;
 import com.dimunoz.androidsocialconn.photos.AlbumContactsFragment;
 import com.dimunoz.androidsocialconn.photos.AlbumPhotoFragment;
 import com.dimunoz.androidsocialconn.photos.NewPhotosFragment;
@@ -79,6 +79,7 @@ public class MainActivity extends Activity {
     public static boolean messagesDownloaded = false;
     public static Integer newMessagesCounter = 0;
     private static AccountManager accountManager;
+    public static MailService mailService;
 
     // SharedPreferences
     private SharedPreferences settings;
@@ -116,6 +117,16 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         setContentView(R.layout.main_menu);
+
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread paramThread, Throwable paramThrowable) {
+                //Catch your exception
+                // Without System.exit() this will not work.
+                Utils.writeExceptionLog(paramThrowable.getStackTrace());
+                System.exit(2);
+            }
+        });
 
         //OpenCV Loader
         /*if (!OpenCVLoader.initDebug()) {
@@ -158,6 +169,7 @@ public class MainActivity extends Activity {
         photoService = new PhotoService(this);
 
         // connect to email
+        mailService = new MailService(this);
         accountManager = AccountManager.get(this);
         Account[] accounts = accountManager.getAccountsByType("com.google");
         onAccountSelected(accounts[0]);
@@ -417,7 +429,7 @@ public class MainActivity extends Activity {
                 Bundle bundle = result.getResult();
                 oauthToken = bundle.getString(AccountManager.KEY_AUTHTOKEN);
                 emailAccount = account.name;
-                new CreateImapStore(MainActivity.this, emailAccount, oauthToken).execute();
+                mailService.connect(account.name,  oauthToken);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -437,7 +449,7 @@ public class MainActivity extends Activity {
         scheduleCheckMessagesTaskExecutor = Executors.newScheduledThreadPool(5);
         CheckNewData myTask = new CheckNewData(this);
         scheduledFuture = scheduleCheckMessagesTaskExecutor.scheduleAtFixedRate(
-                myTask.getRunnable(), 0, 5, TimeUnit.MINUTES);
+                myTask.getRunnable(), 0, 60L, TimeUnit.SECONDS);
     }
 
     public void writeTempFile() {

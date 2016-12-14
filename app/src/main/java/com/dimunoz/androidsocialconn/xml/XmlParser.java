@@ -12,15 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-/**
- * Created with IntelliJ IDEA.
- * InstagramUser: diego
- * Date: 15-10-13
- * Time: 02:56 PM
- * Based on tutorial in http://androidexample.com/XML_Parsing_-_Android_Example/index.php?view=article_discription&aid=69&aaid=94
- * To change this template use File | Settings | File Templates.
- */
-
 public class XmlParser  {
 
     public static ArrayList<XmlContact> parseContactsXml() {

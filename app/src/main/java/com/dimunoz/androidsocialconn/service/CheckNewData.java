@@ -2,7 +2,6 @@ package com.dimunoz.androidsocialconn.service;
 
 import android.util.Log;
 
-import com.dimunoz.androidsocialconn.asynctasks.GetEmailsFromGmail;
 import com.dimunoz.androidsocialconn.database.PhotoEntity;
 import com.dimunoz.androidsocialconn.main.MainActivity;
 import com.dimunoz.androidsocialconn.utils.Utils;
@@ -34,8 +33,7 @@ public class CheckNewData {
                 Log.d(TAG, "run");
                 MainActivity.newPhotosList = (ArrayList<PhotoEntity>) MainActivity.photoService.getNewPhotos();
                 Utils.changeBadgeNewPhotosText(activity);
-                if (!MainActivity.checkingNewEmails)
-                    new GetEmailsFromGmail(activity).execute();
+                MainActivity.mailService.cargarCorreos();
             }
         };
     }

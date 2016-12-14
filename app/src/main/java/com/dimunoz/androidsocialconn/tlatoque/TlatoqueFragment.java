@@ -488,9 +488,10 @@ public class TlatoqueFragment extends Fragment {
             ((PictureView) flipper.getChildAt(getFlipperIndex(flipper.getDisplayedChild() + (direction * HALF_CACHE))))
                     .loadPicture(MainActivity.photoService.getPhoto(picture.getPath()));
 
-            // cache user's profile picture
-            // TODO: 26-09-2016 Ver que es esto
-            new SmartImageView(getActivity()).setImageUrl("http://static.batanga.com/sites/default/files/styles/large/public/curiosidades.batanga.com/files/Por-qu%C3%A9-los-perros-mueven-la-cola.jpg?itok=I1MKTTQi");
+            XmlContact contact = getUserFromMail(picture.getEmail());
+
+            if(contact != null)
+                new SmartImageView(getActivity()).setImageUrl(contact.getPhoto());
         }
     }
 
@@ -580,13 +581,26 @@ public class TlatoqueFragment extends Fragment {
         String pictureCaption = picture.getCaption();
         pictureCaption = !pictureCaption.equals("") ? "<br>" + pictureCaption : "";
 
-        tvCaption.setText(Html.fromHtml("<font color='#ff203d94'><b>" +
-                "Usuario test" + " " + creationDate +
-                "</b></font>" + pictureCaption));
+        XmlContact contact = getUserFromMail(picture.getEmail());
 
-        // set owner's picture
-        // TODO: 26-09-2016 cargar foto
-        setProfilePic("http://static.batanga.com/sites/default/files/styles/large/public/curiosidades.batanga.com/files/Por-qu%C3%A9-los-perros-mueven-la-cola.jpg?itok=I1MKTTQi");
+
+        if (contact != null) {
+            tvCaption.setText(Html.fromHtml("<font color='#ff203d94'><b>" +
+                    contact.getNickname() + " " + creationDate +
+                    "</b></font>" + pictureCaption));
+
+            // set owner's picture
+            setProfilePic(contact.getPhoto());
+        }
+    }
+
+    public XmlContact getUserFromMail(String email) {
+        for (XmlContact contact : MainActivity.xmlContacts) {
+            if (contact.getEmail().equals(email))
+                return contact;
+        }
+
+        return null;
     }
 
     private void setProfilePic(String url) {

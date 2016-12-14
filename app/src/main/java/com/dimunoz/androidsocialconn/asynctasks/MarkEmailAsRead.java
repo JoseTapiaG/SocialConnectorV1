@@ -44,7 +44,7 @@ public class MarkEmailAsRead extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
         Log.d(TAG, "doInBackground");
         try {
-            Folder received = MainActivity.imapStore.getFolder("INBOX");
+            Folder received = MainActivity.mailService.getImapStore().getFolder("INBOX");
             received.open(Folder.READ_WRITE);
 
             SearchTerm term = new ReceivedDateTerm(ComparisonTerm.EQ, personalMessage.getDatetime());

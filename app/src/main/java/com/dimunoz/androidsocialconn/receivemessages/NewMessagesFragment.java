@@ -21,7 +21,10 @@ import com.dimunoz.androidsocialconn.main.TopbarFragment;
 import com.dimunoz.androidsocialconn.sendmessage.CreateMessageFragment;
 import com.dimunoz.androidsocialconn.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import static com.dimunoz.androidsocialconn.main.MainActivity.mailService;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,12 +36,17 @@ import java.util.Calendar;
 public class NewMessagesFragment extends BaseDisplayMessageFragment {
 
     private static final String TAG = "NewMessagesFragment";
+    private ArrayList<PersonalMessage> personalMessages;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         setHasOptionsMenu(true);
+        personalMessages = mailService.getEmails();
+        PersonalMessage message = personalMessages.get(0);
+        contact = message.getAuthor();
+        currentMessage = message;
     }
 
     @Override
@@ -73,7 +81,7 @@ public class NewMessagesFragment extends BaseDisplayMessageFragment {
         // set arrow visibility
         this.leftArrowImage.setVisibility(View.INVISIBLE);
         this.leftArrowText.setVisibility(View.INVISIBLE);
-        if (MainActivity.newMessagesList.size() > 1) {
+        if (personalMessages.size() > 1) {
             this.rightArrowImage.setVisibility(View.VISIBLE);
             this.rightArrowText.setVisibility(View.VISIBLE);
         } else {
@@ -82,9 +90,10 @@ public class NewMessagesFragment extends BaseDisplayMessageFragment {
         }
 
         // set messages count
-        this.messageCount.setText("1 de " + MainActivity.newMessagesList.size());
+        this.messageCount.setText("1 de " + personalMessages.size());
 
         markCurrentMessageAsSeen();
+        Utils.changeBadgeNewMessagesText(getActivity());
 
         return contentLayout;
     }
@@ -104,12 +113,12 @@ public class NewMessagesFragment extends BaseDisplayMessageFragment {
 
     // left arrow button
     public void handleLeftArrowTapEvent(View view) {
-        int index = MainActivity.newMessagesList.indexOf(currentMessage) - 1;
-        this.currentMessage = MainActivity.newMessagesList.get(index);
+        int index = personalMessages.indexOf(currentMessage) - 1;
+        this.currentMessage = personalMessages.get(index);
         this.contact = currentMessage.getAuthor();
         changeContactInfo();
         changeMessage();
-        this.messageCount.setText((index + 1) + " de " + MainActivity.newMessagesList.size());
+        this.messageCount.setText((index + 1) + " de " + personalMessages.size());
 
         // set arrow visibility
         this.rightArrowImage.setVisibility(View.VISIBLE);
@@ -126,18 +135,18 @@ public class NewMessagesFragment extends BaseDisplayMessageFragment {
     // right arrow button
     public void handleRightArrowTapEvent(View view) {
         Log.d(TAG, "handleRightArrowTapEvent");
-        int index = MainActivity.newMessagesList.indexOf(currentMessage) + 1;
-        this.currentMessage = MainActivity.newMessagesList.get(index);
+        int index = personalMessages.indexOf(currentMessage) + 1;
+        this.currentMessage = personalMessages.get(index);
         this.contact = currentMessage.getAuthor();
         changeContactInfo();
         changeMessage();
         markCurrentMessageAsSeen();
-        this.messageCount.setText((index + 1) + " de " + MainActivity.newMessagesList.size());
+        this.messageCount.setText((index + 1) + " de " + personalMessages.size());
 
         // set arrow visibility
         this.leftArrowImage.setVisibility(View.VISIBLE);
         this.leftArrowText.setVisibility(View.VISIBLE);
-        if (index == MainActivity.newMessagesList.size() - 1) {
+        if (index == personalMessages.size() - 1) {
             this.rightArrowImage.setVisibility(View.INVISIBLE);
             this.rightArrowText.setVisibility(View.INVISIBLE);
         } else {
@@ -230,6 +239,7 @@ public class NewMessagesFragment extends BaseDisplayMessageFragment {
     private void markCurrentMessageAsSeen() {
         if (!currentMessage.getSeen()) {
             currentMessage.setSeen(true);
+            MainActivity.mailService.markMessageAsRead(currentMessage);
             new MarkEmailAsRead(getActivity(), currentMessage).execute();
         }
     }

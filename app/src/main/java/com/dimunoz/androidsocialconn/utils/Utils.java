@@ -244,12 +244,7 @@ public class Utils {
     }
 
     private static int getNewMessagesNotSeen() {
-        int count = 0;
-        for (PersonalMessage message: MainActivity.newMessagesList) {
-            if (!message.getSeen())
-                count++;
-        }
-        return count;
+        return MainActivity.mailService.getNotSeenMessagesCount();
     }
 
     private static int getNewPhotosNotSeen() {
@@ -371,6 +366,28 @@ public class Utils {
             if (myFile.exists())
                 myOutWriter.append('\n');
             myOutWriter.append(data);
+            myOutWriter.close();
+            fOut.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeExceptionLog(StackTraceElement[] data){
+        File externalStorageDir = Environment.getExternalStorageDirectory();
+        File myFile = new File(externalStorageDir, "logSocialConnector.log");
+        try {
+            FileOutputStream fOut = new FileOutputStream(myFile, true);
+            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+            if (myFile.exists()){
+                myOutWriter.append('\n');
+                myOutWriter.append(new Date().toString());
+                myOutWriter.append('\n');
+            }
+            for(StackTraceElement stack : data){
+                myOutWriter.append(stack.toString());
+                myOutWriter.append('\n');
+            }
             myOutWriter.close();
             fOut.close();
         } catch(Exception e) {

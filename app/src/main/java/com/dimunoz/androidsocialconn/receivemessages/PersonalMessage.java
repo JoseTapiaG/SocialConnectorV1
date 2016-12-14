@@ -92,4 +92,13 @@ public class PersonalMessage {
     public void setVideoFile(File videoFile) {
         this.videoFile = videoFile;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof PersonalMessage){
+            return this.content.equals((((PersonalMessage) o).getContent())) &&
+                    this.getAuthor().getEmail().equals(((PersonalMessage) o).getAuthor().getEmail());
+        }
+        return false;
+    }
 }

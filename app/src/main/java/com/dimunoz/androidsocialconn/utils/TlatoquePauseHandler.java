@@ -31,7 +31,7 @@ public class TlatoquePauseHandler {
 
     private String TAG = "TlatoquePauseHandler";
 
-    private final static int SECONDS_TO_SLEEP_AFTER_PAUSE = 120;
+    private final static int SECONDS_TO_SLEEP_AFTER_PAUSE = 240;
 
     private ScheduledExecutorService pauseTimer;
     private MainActivity activity;
@@ -96,7 +96,7 @@ public class TlatoquePauseHandler {
                     photo_begin_see, cal.getTimeInMillis());
         }
 
-        private void logNewPhotosEmpty(){
+        private void logNewPhotosEmpty() {
             SharedPreferences settings = PreferenceManager
                     .getDefaultSharedPreferences(activity.getApplicationContext());
             Long photo_begin_see = settings.getLong(
@@ -133,7 +133,7 @@ public class TlatoquePauseHandler {
                                     TlatoqueFragment newFragment = new TlatoqueFragment();
                                     transaction.replace(R.id.fragment_container, newFragment,
                                             MainActivity.FRAGMENT_TAG);
-                                    transaction.commitAllowingStateLoss();
+                                    transaction.commit();
                                     if (currentFragment instanceof NewPhotosFragment) {
                                         if (!MainActivity.newPhotosList.isEmpty())
                                             logNewPhoto(currentFragment);
